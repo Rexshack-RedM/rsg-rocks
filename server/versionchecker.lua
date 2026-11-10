@@ -1,8 +1,9 @@
 -----------------------------------------------------------------------
--- Improved Version Checker for RexShackGaming Resources
+-- Improved Version Checker for Rexshack-RedM Resources
 ----------------------------------------------------------------------- 
+
 local resourceName = GetCurrentResourceName()
-local githubRawBase = 'https://raw.githubusercontent.com/RexShackGaming/rex-versioncheckers/main/'
+local githubRawBase = 'https://raw.githubusercontent.com/Rexshack-RedM/rsg-versioncheckers/main/'
 
 local function printLog(type, message)
     local color = (type == 'success' and '^2') or (type == 'warning' and '^3') or '^1'
@@ -31,6 +32,7 @@ local function isVersionOutdated(current, latest)
 end
 
 local function CheckVersion()
+    if not Config.VersionCheck then return end
     local currentVersion = GetResourceMetadata(resourceName, 'version')
     if not currentVersion then
         printLog('error', 'Unable to read current resource version from fxmanifest.lua!')
@@ -40,6 +42,11 @@ local function CheckVersion()
     local versionUrl = githubRawBase .. resourceName .. '/version.txt'
 
     PerformHttpRequest(versionUrl, function(statusCode, remoteVersion, headers)
+        if statusCode == 404 then
+            printLog('warning', 'No version entry found on GitHub for this resource (skipping check).')
+            return
+        end
+
         if statusCode ~= 200 then
             printLog('error', ('Version check failed (HTTP %s). Check your internet or the GitHub URL.'):format(statusCode))
             return
@@ -60,7 +67,7 @@ local function CheckVersion()
 
         if isVersionOutdated(currentVersion, remoteVersion) then
             printLog('error', ('OUTDATED! Please update to version %s'):format(remoteVersion))
-            printLog('error', 'Download from: https://portal.cfx.re/assets/granted-assets')
+            printLog('error', 'Download from: https://github.com/Rexshack-RedM/'..GetCurrentResourceName()..'')
         else
             printLog('warning', ('You are running a newer version (%s) than the remote (%s). Possible dev build?'):format(currentVersion, remoteVersion))
         end
