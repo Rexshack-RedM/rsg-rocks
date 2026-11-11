@@ -8,6 +8,7 @@
     "busy": "Jesteś teraz zajęty!",
     "collected": "Zebrano %sx %s",
     "pickaxe_broke": "Twój kilof się złamał!",
+    "pickaxe_worn": "Twój kilof jest zużyty i wymaga naprawy!",
     "rock_label": "Skała",
     "saltrock_label": "Sól kamienna",
     "drill_title": "Wiercenie",

@@ -8,6 +8,7 @@
     "busy": "You are busy right now!",
     "collected": "You collected %sx %s",
     "pickaxe_broke": "Your pickaxe broke!",
+    "pickaxe_worn": "Your pickaxe is worn out and needs repairing!",
     "rock_label": "Rock",
     "saltrock_label": "Rock Salt",
     "drill_title": "Drilling",

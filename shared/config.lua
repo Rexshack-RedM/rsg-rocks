@@ -38,7 +38,7 @@ Config.PickaxeDurability       = true
 Config.PickaxeMaxQuality       = 100
 Config.PickaxeDegradeMin       = 1
 Config.PickaxeDegradeMax       = 3
-Config.PickaxeBreakAtZero      = true
+Config.PickaxeBreakAtZero      = true  -- false = keep the pickaxe at 0 quality; it can't mine until its quality is raised again (repair / sharpening script)
 
 -- Mining XP (stored in player metadata)
 Config.MiningXP = {

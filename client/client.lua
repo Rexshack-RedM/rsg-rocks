@@ -165,6 +165,19 @@ local function RemoveAttachedPickaxes(ped)
     end
 end
 
+-- has a pickaxe / has one that can still mine (quality above 0 when durability is on)
+local function PickaxeState()
+    local has = false
+    for _, item in pairs((RSGCore.Functions.GetPlayerData() or {}).items or {}) do
+        if item and item.name == Config.RequiredItem and (item.amount or 1) > 0 then
+            has = true
+            local quality = tonumber((item.info or {}).quality) or Config.PickaxeMaxQuality or 100
+            if not Config.PickaxeDurability or quality > 0 then return true, true end
+        end
+    end
+    return has, false
+end
+
 AttemptMine = function(zoneKey)
     if isBusy then
         Notify(locale('busy'), 'inform')
@@ -172,8 +185,9 @@ AttemptMine = function(zoneKey)
     end
     if not CanMine() then return end
     -- client check is for UX only; the server re-checks the pickaxe on start and reward
-    if not RSGCore.Functions.HasItem(Config.RequiredItem, 1) then
-        Notify(locale('no_pickaxe'), 'error')
+    local hasPickaxe, usable = PickaxeState()
+    if not usable then
+        Notify(locale(hasPickaxe and 'pickaxe_worn' or 'no_pickaxe'), 'error')
         return
     end
     isBusy = true

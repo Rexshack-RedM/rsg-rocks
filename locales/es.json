@@ -8,6 +8,7 @@
     "busy": "¡Estás ocupado ahora mismo!",
     "collected": "Has recogido %sx %s",
     "pickaxe_broke": "¡Tu pico se ha roto!",
+    "pickaxe_worn": "¡Tu pico está desgastado y necesita reparación!",
     "rock_label": "Roca",
     "saltrock_label": "Sal de roca",
     "drill_title": "Perforación",

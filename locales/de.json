@@ -8,6 +8,7 @@
     "busy": "Du bist gerade beschäftigt!",
     "collected": "Du hast %sx %s gesammelt",
     "pickaxe_broke": "Deine Spitzhacke ist zerbrochen!",
+    "pickaxe_worn": "Deine Spitzhacke ist abgenutzt und muss repariert werden!",
     "rock_label": "Gestein",
     "saltrock_label": "Steinsalz",
     "drill_title": "Bohren",

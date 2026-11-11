@@ -8,6 +8,7 @@
     "busy": "Je bent nu bezig!",
     "collected": "Je hebt %sx %s verzameld",
     "pickaxe_broke": "Je houweel is gebroken!",
+    "pickaxe_worn": "Je houweel is versleten en moet gerepareerd worden!",
     "rock_label": "Steen",
     "saltrock_label": "Steenzout",
     "drill_title": "Boren",

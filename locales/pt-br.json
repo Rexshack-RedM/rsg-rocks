@@ -8,6 +8,7 @@
     "busy": "Você está ocupado agora!",
     "collected": "Você coletou %sx %s",
     "pickaxe_broke": "Sua picareta quebrou!",
+    "pickaxe_worn": "Sua picareta está desgastada e precisa de reparo!",
     "rock_label": "Rocha",
     "saltrock_label": "Sal-gema",
     "drill_title": "Perfuração",

@@ -10,7 +10,7 @@
 | `client/nui.lua` | Shared NUI focus (`RocksSetNuiFocus(owner, state)`) for the drill menu and lamp panel, with the single push-to-talk whitelist loop |
 | `client/drillmenu.lua` | Foreman drill NUI (`html/`): rock counts, amount stepper, Drill / Drill All; push-to-talk whitelist while focused |
 | `client/hatlight.lua` + `html/hatlight.js` | Miner's lamp: draws `DRAW_LIGHT_WITH_RANGE` ahead of the head while the hat is worn; panel (top left, draggable when focused via `/minerlight`) for colour / brightness / spread / on-off; settings + position in client KVP `rsg-rocks:hatlight`; shared via state bag `rocksHatLight` |
-| `client/mininghat.lua` | Miner's hat (requires `mininghat` item, auto near rocks + toggle on item use): removes the player's hat (meta ped category `hats`) near rocks, attaches hat + lamp props, re-applies the saved hat component on leaving |
+| `client/mininghat.lua` | Miner's hat (requires `mininghat` item, auto near rocks + toggle on item use): takes the player's own hat off (meta ped category `hats`, same natives as rsg-wardrobe `/hat`) while the miner's hat is worn and keeps it off (re-checked every second), attaches hat + lamp props, re-applies the hat when the miner's hat comes off (component read off the ped, else rsg-character's clothes cache) |
 | `client/admin.lua` | Admin rock placement mode (ghost prop) |
 | `server/server.lua` | DB setup/seed, zones, work sessions, rewards, XP, durability, admin commands |
 
@@ -57,6 +57,10 @@ Every reward is the end of a server-side session: the client fires a `Start*` ev
 | `rsg-rocks:server:GetZones` | zone list + this character's remaining personal cooldowns (requested on player load and resource restart) |
 
 ## Changelog
+
+### 3.0.1
+- Fixed: the miner's hat clipped into the player's own hat. The own hat was only removed when its component hash could be read off the ped, and that lookup could fail. It is now removed whenever the `hats` category is in use, and removed again if it comes back while the miner's hat is on (`/hat`, outfit change, revive). It is put back when the miner's hat comes off; if the player had already taken it off with `/hat`, it stays off.
+- Fixed: a pickaxe kept at 0 quality (`Config.PickaxeBreakAtZero = false`) could still mine. Mining now needs a pickaxe with quality above 0 (checked on the client for the message, and on the server at start and reward); otherwise the player is told the pickaxe is worn out (`pickaxe_worn`, all 10 locales). Durability is taken from the usable pickaxe, not a 0-quality spare. Raise `info.quality` from a repair / sharpening script to make it usable again.
 
 ### 3.6.5 (audit)
 - Fixed: smelting could start in the pause between batch-drilled rocks and silently end the batch; smelting and opening the drill menu now say "busy" while work is running.

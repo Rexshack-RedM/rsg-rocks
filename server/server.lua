@@ -88,14 +88,33 @@ local function YieldAmount(rewardData, level)
     return math.random(minA, maxA)
 end
 
+local function PickaxeQuality(item)
+    return tonumber((item.info or {}).quality) or Config.PickaxeMaxQuality or 100
+end
+
+-- Pickaxe the player can mine with. With durability on, a pickaxe at 0 quality doesn't
+-- count (it stays in the inventory when Config.PickaxeBreakAtZero = false, e.g. to be
+-- repaired / sharpened by another script).
+-- returns item | nil, hasWornOut (has pickaxes, but all at 0 quality)
+local function FindPickaxe(Player)
+    local wornOut = false
+    for _, item in pairs(Player.PlayerData.items or {}) do
+        if item and item.name == Config.RequiredItem and (item.amount or 1) > 0 then
+            if not Config.PickaxeDurability or PickaxeQuality(item) > 0 then return item, false end
+            wornOut = true
+        end
+    end
+    return nil, wornOut
+end
+
 local function DegradePickaxe(src, Player)
     if not Config.PickaxeDurability then return end
 
-    local item = Player.Functions.GetItemByName(Config.RequiredItem)
+    local item = FindPickaxe(Player) -- the usable one, never a 0-quality spare
     if not item then return end
 
     local info = item.info or {}
-    local quality = tonumber(info.quality) or Config.PickaxeMaxQuality or 100
+    local quality = PickaxeQuality(item)
     local dmin = Config.PickaxeDegradeMin or 1
     local dmax = math.max(dmin, Config.PickaxeDegradeMax or 3)
     quality = math.max(0, quality - math.random(dmin, dmax))
@@ -350,7 +369,8 @@ end)
 ---------------------------------
 RegisterNetEvent('rsg-rocks:server:StartMining', function(zoneKey)
     local src = source
-    if not RSGCore.Functions.GetPlayer(src) then return end
+    local Player = RSGCore.Functions.GetPlayer(src)
+    if not Player then return end
 
     zoneKey = tonumber(zoneKey)
     local zone = zoneKey and MiningZones[zoneKey]
@@ -359,7 +379,11 @@ RegisterNetEvent('rsg-rocks:server:StartMining', function(zoneKey)
     local now = GetGameTimer()
     if IsZoneDepleted(zoneKey, now) or IsOnCooldown(src, zoneKey, now) then return end
     if not IsNearZone(src, zone) then return end
-    if not exports['rsg-inventory']:HasItem(src, Config.RequiredItem, 1) then return end
+    local pickaxe, wornOut = FindPickaxe(Player)
+    if not pickaxe then
+        if wornOut then Notify(src, locale('mining_title'), locale('pickaxe_worn'), 'error') end
+        return
+    end
 
     StartSession(src, 'mine', zoneKey)
 end)
@@ -380,7 +404,7 @@ RegisterNetEvent('rsg-rocks:server:MineReward', function(zoneKey)
     local now = GetGameTimer()
     if IsZoneDepleted(zoneKey, now) or IsOnCooldown(src, zoneKey, now) then return end
     if not IsNearZone(src, zone) then return end
-    if not exports['rsg-inventory']:HasItem(src, Config.RequiredItem, 1) then return end
+    if not FindPickaxe(Player) then return end
 
     local itemName = rewardData.item
     if not RSGCore.Shared.Items[itemName] then return end

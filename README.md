@@ -7,13 +7,13 @@ Mining system for RSG Framework (rsg-core 3.x). Mine rocks and salt rocks, drill
 - Any player can mine, drill and smelt (no job lock)
 - Database rock nodes with in-game admin place (rsg-gizmo: move + rotate, heading saved) / delete / toggle
 - rsg-target on rock props (or plain sphere zones with `Config.SpawnRockProps = false`)
-- Pickaxe durability (item `quality` metadata) – breaks at 0
+- Pickaxe durability (item `quality` metadata) – breaks at 0, or with `Config.PickaxeBreakAtZero = false` it is kept at 0 and can't mine until its quality is raised again (e.g. by a repair / sharpening script)
 - Global node deplete (rock is empty for everyone for a while) + personal cooldown
 - Mining XP / levels (`/miningxp`) with a yield bonus per level
 - Foreman drill menu (NUI): choose how many rocks to drill or batch drill them one rock at a time, each paying out as it finishes (`Config.DrillMaxBatch`, `Config.DrillBatchPause`); push-to-talk works while it is open (`Config.AllowPushToTalkWhileOpen`)
 - Weighted drill loot, rare gem chance on normal rock
 - Camp smelting: one target option per recipe, only shown when you have the ore
-- Miner's hat with lamp: needs the `mininghat` item, worn automatically near mining rocks and toggled on/off by using the item; the player's own hat is restored (`Config.MiningHat`)
+- Miner's hat with lamp: needs the `mininghat` item, worn automatically near mining rocks and toggled on/off by using the item; the player's own hat is taken off while the miner's hat is worn and put back afterwards (`Config.MiningHat`)
 - Miner's lamp panel (opens with `/minerlight` while the hat is worn, top left by default, draggable): light colour, brightness and spread, on/off; `/minerlight` to adjust. Settings and panel position are saved per player, and other players see your lamp (`Config.MiningHat.light`)
 - Server-authoritative timed sessions for mining, drilling and smelting (no instant-reward spam)
 - Locales: en, de, el, es, fr, ja, nl, pl, pt-br, ro

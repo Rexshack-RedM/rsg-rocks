@@ -8,6 +8,7 @@
     "busy": "Tu es occupé pour le moment !",
     "collected": "Tu as récolté %sx %s",
     "pickaxe_broke": "Ta pioche s'est cassée !",
+    "pickaxe_worn": "Ta pioche est usée et doit être réparée !",
     "rock_label": "Roche",
     "saltrock_label": "Sel gemme",
     "drill_title": "Forage",

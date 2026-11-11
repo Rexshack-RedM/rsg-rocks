@@ -8,6 +8,7 @@
     "busy": "今は手が離せません！",
     "collected": "%sx %s を採取しました",
     "pickaxe_broke": "ツルハシが壊れました！",
+    "pickaxe_worn": "ツルハシが消耗しています。修理が必要です！",
     "rock_label": "岩",
     "saltrock_label": "岩塩",
     "drill_title": "掘削",
